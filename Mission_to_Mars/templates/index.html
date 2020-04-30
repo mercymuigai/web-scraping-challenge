@@ -5,22 +5,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Mission To Mars</title>
+  <title>Scrapping Mars</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
-  <div class="container-fluid">
+
+  <div class="container" style="width:100%">
+
+  <!-- <div class="container-fluid">   -->
+
     <div class="jumbotron text-center">
-      <h1>Visit the...</h1>
-      <p>Beach. Rainforest. Volcano. Tree House. Sloths.</p>
-      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get Data!</a></p>
+      <h1>Mission To Mars</h1>
+      <p>Scrapping Mars!</p>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data!</a></p>
+      
     </div>
+  
+  
+    <!-- mars news -->
     
-    <h2>The typical weather in Costa Rica is:</h2>
-    <h3>Max Temp: {{ vacation.title }}</h3>
-    <h3>Min Temp: {{ vacation.article }}</h3>
-  </div>
+    <div class="row" id="mars-news" text-align="text-center">
+      <div class="col-md-12">
+            <h2>The latest Mars News:</h2>
+            <h4>{{mars.title}}</h4>
+           <p>{{mars.paragraph}}</p>
+        </div>
+      </div>
+    </div> 
+      <!-- Mars Featured Image -->
+    <div class="container">
+
+      <!-- <div class="row" id="featured-image"> -->
+        <div class="col-md-6">
+          <div class="panel">
+            <div class="panel-body">
+              <h2>The Featured Image</h2>
+              <img  src="{{mars.featured_image_url}}" class="img-fluid" alt="Featured Image" width="400" height="400">
+            </div>
+          </div>
+        </div>
+      <!-- </div> -->
+
+        <!-- mars facts -->
+        <!-- safe feature to be able to get access to scrape -->
+        <div class="panel">
+          <div class="panel-body">
+              <h2>Mars Facts</h2>
+          {{mars.table| safe}} 
+        <div class="col-md-6" >
+        </div>
+        </div>
+       </div> 
+      </div>  
+    
+      <!-- mars hemispheres -->
+        <div class="col-md-12" id="hems-images" style="padding: bottom 40px">
+          <h2 class="text-center">Mars Hemispheres</h2>
+        </div>
+          {% for hemisphere in mars.hemisphere_images_urls%} 
+          <div class="col-md-6 card border ">
+                <h3> {{hemisphere.title}}</h3>
+                <img  src="{{hemisphere.img_url | safe}}" class="img-fluid" class="img-center" alt="Hemisphere Images" width="400" height="400">
+          </div>
+          
+          {%endfor%} 
+        </div>
+          </div>
+
+
+
+
+  
+
   </div>
 </body>
 

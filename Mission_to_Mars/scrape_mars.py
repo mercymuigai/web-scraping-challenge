@@ -13,6 +13,7 @@ def scrape():
 
     url = 'https://mars.nasa.gov/news/'
     browser.visit(url)
+    time.sleep(3)
 
     html = browser.html
 
@@ -25,13 +26,45 @@ def scrape():
 
     #scrapping for the paragraph text
 
-    # paragraph  = soup.find('div', class_='article_teaser_body').text
+    paragraph  = soup.find('div', class_='article_teaser_body').text
 
     print(title)
 
     print('')
 
-    # print(paragraph)
+    print(paragraph)
+
+    # JPL Mars Space Images - Featured Image
+
+    # #url for the scrape
+    url_image = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+
+    # visit the browser
+
+    browser.visit(url_image)
+
+    html= browser.html
+
+    #getting the soup object
+    soup = BeautifulSoup(html, 'html.parser')
+    # soup
+
+    #using soup to get featured_image
+
+    img = soup.find_all("a", class_="fancybox")
+    # print(img)
+
+    #  getting the featured_image_url and appending to the image printed
+
+#create an empty list
+
+    img_src = []
+    for image in img:
+        full_image = image['data-fancybox-href']
+        img_src.append(full_image)
+
+    featured_image_url = 'https://www.jpl.nasa.gov' + full_image
+    featured_image_url
 
     # Mars Facts
 
@@ -60,9 +93,9 @@ def scrape():
     #pandas to html
 
     html_table = mars_facts.to_html()
-    html_table
+    
 
-    html_table.replace('\n', '')
+    html_table = html_table.replace('\n', '')
 
     # saving to a table html
 
@@ -89,7 +122,6 @@ def scrape():
     syrtis_hem = browser.find_by_tag('h3')[2].text
     valles_hem = browser.find_by_tag('h3')[3].text
 
-    schiaparelli_hem
 
     #getting the images
 
@@ -100,7 +132,7 @@ def scrape():
     soup_4=BeautifulSoup(html_4, 'html.parser')
 
 
-    cerbus=soup_4.find_all('a')[5]['href']
+    cerbus=soup_4.find_all('a')[4]['href']
 
     browser.back()
 
@@ -109,20 +141,39 @@ def scrape():
     soup_4=BeautifulSoup(html_4, 'html.parser')
 
 
-    schia=soup_4.find_all('a')[5]['href']
+    schia=soup_4.find_all('a')[4]['href']
+
+    browser.back()
+
+    browser.click_link_by_partial_text('Syrtis Major Hemisphere Enhanced')
+    html_4=browser.html
+    soup_4=BeautifulSoup(html_4, 'html.parser')
+
+    syrtis=soup_4.find_all('a')[4]['href']
+
+    browser.back()
+
+    browser.click_link_by_partial_text('Valles Marineris Hemisphere Enhanced')
+    html_4=browser.html
+    soup_4=BeautifulSoup(html_4, 'html.parser')
+
+    valles=soup_4.find_all('a')[4]['href']
 
     hemisphere_image_urls = [
         {"title": cerberus_hem, "img_url": cerbus},
-        {"title": schiaparelli_hem, "img_url": schia}
+        {"title": schiaparelli_hem, "img_url": schia},
+        {"title": syrtis_hem, "img_url": syrtis},
+        {"title": valles_hem, "img_url": valles}
     ]
 
     print(hemisphere_image_urls)
 
     mars_dict={}
     mars_dict['title'] = title
-    # mars_dict['paragraph'] = paragraph
+    mars_dict['paragraph'] = paragraph
+    mars_dict['featured_image_url'] = featured_image_url
     mars_dict['table']=html_table
-    mars_dict['hem Images']=hemisphere_image_urls
+    mars_dict['hemisphere_images_urls']=hemisphere_image_urls
 
     return mars_dict
 

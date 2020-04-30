@@ -14,10 +14,10 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/mission_mars")
 def home():
 
     # Find one record of data from the mongo database
-    destination_data = mongo.db.collection.find_one()
+    mars = mongo.db.collection.find_one()
 
     # Return template and data
-    return render_template("index.html", vacation=destination_data)
+    return render_template("index.html", mars=mars)
 
 
 # Route that will trigger the scrape function
@@ -27,7 +27,7 @@ def scrape():
     # Run the scrape function
     mars_data = scrape_mars.scrape()
 
-    # Update the Mongo database using update and upsert=True
+    # Update the Mongo database using update and upsert=True (inserting the dict into mongo)
     mongo.db.collection.update({}, mars_data, upsert=True)
 
     # Redirect back to home page
